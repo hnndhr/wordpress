@@ -1,0 +1,29 @@
+name: Portability Test
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        php-version: [7.4, 8.0, 8.1]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-version }}
+
+      - name: Validate PHP version
+        run: php -v
+
+      - name: Check PHP syntax
+        run: |
+          find . -name "*.php" -exec php -l {} \;
